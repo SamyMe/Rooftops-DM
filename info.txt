@@ -1,0 +1,10 @@
+LINKS
+
+	Paris GeoJson
+		https://github.com/codeforamerica/click_that_hood/blob/master/public/data/paris.geojson
+		https://www.slate.fr/story/89443/carte-interactive-terrasses-cafes-paris
+		https://blandinelc.carto.com/tables/arrondissements_osm_paris/public
+		http://global.mapit.mysociety.org/area/29746.html
+
+	How to get the area of a geojson polygon
+		https://github.com/mapbox/geojson-area
