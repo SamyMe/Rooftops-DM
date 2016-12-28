@@ -1,0 +1,170 @@
+
+[Tutorial][Video][thenewboston][Web Crawler].txt
+
+========
+
+LINKS
+	https://www.youtube.com/playlist?list=PL6gx4Cwl9DGA8Vys-f48mAH9OKSUyav0q
+	https://github.com/buckyroberts/Spider
+
+
+01 - Python Web Crawler Tutorial - 1 - Creating a New Project-nRW90GASSXE
+
+	The goal of the web crawler presented here is to gather all the links on the website.
+	Two python packages might come in handy to do that:
+		Scrapy:
+			Official: https://scrapy.org/
+			Tutorial: https://doc.scrapy.org/en/latest/intro/tutorial.html
+			| sudo pip3 install scrapy
+		Beautiful Soup
+			Official: https://www.crummy.com/software/BeautifulSoup/
+			| sudo pip3 install beautifulsoup4
+	The rest of the video shows how to create a dedicated folder for the project with os.
+
+
+02 - Python Web Crawler Tutorial - 2 - Queue and Crawled Files-z_vIWoTZm2E
+
+	There are only 2 data files that are going to go inside the projects directory: the "queue" and the "crawled" files. These files only contain lists of links.
+		- Queue will contain the waiting list of all the html adresses we did not crawl yet.
+		- Crawed will contain the list of all the html adresses that have already been crawled.
+	The crawling will be multi-threaded at the end of this tutorial.
+	The rest of the video shows how to create both files in a create_data_files() fct.
+	Note: Slashes are missing before the names of the files.
+
+
+03 - Python Web Crawler Tutorial - 3 - Adding and Deleting Links-pjkZCQTfneQ
+
+	Presentation of just 2 utility fcts to append content to a file and delete the content of a file.
+
+
+04 - Python Web Crawler Tutorial - 4 - Speeding Up the Crawler-jCBbxL4BGfU
+
+	All of this writing into files will be super slow. The rationale behind using files is to keep track of the crawling without variables so that we can know where we were if there is a pb. But we can have the best of both worlds by using both variables AND files.
+		The data structure that we're gonna use is a set. No duplicates in sets! The idea is to use sets most of the time and periodically write their content into files.
+	The rest of the video shows how file_to_set() and set_to_file() are created.
+
+
+05 - Python Web Crawler Tutorial - 5 - Parsing HTML-F2lbS-F0eTQ
+
+	To gather all the links we need to import this:
+		| from html.parser import HTMLParser
+		| from urllib import parse
+	The rest of the video shows:
+		- how to create a custom LinkFinder (which inherits from HTMLParser)
+		- and how to use this to visualize the tags that have been reached during the reading of an html file.
+
+
+06 - Python Web Crawler Tutorial - 6 - Finding Links-udBt0K7gwLc
+
+	At the end of the previous video LinkFinder is super generic and does pretty much nothing. In this video it becomes specialized, so that it only finds links and nothing else.
+	Also, we make sure to handle relative links properly with:
+		| urllib.parse.urljoin(base_url, value)
+		If value is already a full url, no pb, urllib takes care of it.
+	The rest of the video is just how to put the links into a set.
+
+
+07 - Python Web Crawler Tutorial - 7 - Spider Concept-Eis9vu4XiNI
+
+	Here we create the spider class. The spider:
+		- takes a link
+		- connects itself to the page, grabs new links with LinksFinder
+		- adds those links to the waiting list
+		- repeat ...
+	The idea (to parallelize the crawling process) is to have many spiders but only one "queue" file and one "crawled" file.
+
+
+08 - Python Web Crawler Tutorial - 8 - Creating the Spider-MpazNSqP4uo
+
+	In order to make the information (in "queue" and "crawled") to all the spiders we're going to use class variables (the value of which is shared among all instances.
+
+
+09 - Python Web Crawler Tutorial - 9 - Giving the Spider Information-QHWy0CXDBl4
+
+	Two methods are going to be added to the Spider later
+		- a boot() fct (for some reason)
+		- and a crawl_page() fct
+
+
+10 - Python Web Crawler Tutorial - 10 - Booting Up the Spider-uTdweD5SCag
+
+	Code of the boot() fct. It creates the project directory, the 2 files ("queue" and "crawled") and the 2 sets.
+	To make a static method, just use a decorator:
+		| @staticmethod
+
+
+11 - Python Web Crawler Tutorial - 11 - Crawling Pages-luYg1qMVSfY
+
+	Code of the crawl_page() fct.
+		- It takes the thread_name and the page_url as arguments (so they can be printed, and we know what is happening).
+		- Then, we check that the page has not been crawled yet.
+		- We add the newly gathered links to the queue.
+		- We remove the "just crawled" link from the queue and add it to the "crawled" set.
+		- Finally, we update the files.
+
+
+12 - Python Web Crawler Tutorial - 12 - Gathering Links-XHIlke_0WnM
+
+	Code of the gather_link() fct (which gets the links from a page_url).
+		- In a try/except statement:
+		- Connect to the web page with urlopen()
+		- Check that the page is a real html file
+		- Convert it to human readable form
+		- Get the links with the LinksParser
+		- Return the links in the form of a set
+
+
+13 - Python Web Crawler Tutorial - 13 - Adding Links to the Queue-rxGUiLcW0cI
+
+	Code of the add_links_to_queue() fct.
+	The only thing truly important here is that we need to check what we add to the queue.
+		- Nothing that is already in the queue
+		- Nothing that has been crawled before
+		- Nothing that is not from the website we want to crawl
+
+14 - Python Web Crawler Tutorial - 14 - Domain Name Parsing-PPonGS2RZNc
+
+	Code of the domain.py file (used by add_links_to_queue() to check that links are from the right website).
+
+
+15 - Python Web Crawler Tutorial - 15 - The First Spider-vKFc3-5Y17U
+
+	Code of main.py.
+		| import threading
+		| from queue import Queue
+		The queue here is the "job" that each thread does.
+		We take care of the multi-threading in part 16
+	In this video we introduce:
+		- all the imports
+		- all the constants (domain name, number of threads ... etc.)
+	Run of the first spider
+
+
+16 - Python Web Crawler Tutorial - 16 - Creating Jobs-zfBhpmhXUqM
+
+	Code of create_jobs() and crawl(). Here we go multithread. These are double recursive functions.
+	In create_jobs():
+		| for link in file_to_set(QUEUE_FILE):
+		|    queue.put(link)
+		This adds ALL the links of in the queue file to the thread queue.
+		| queue.join()
+		This synchronizes the threads when the jobs are done.
+		| crawl()
+	In crawl():
+		We just extract the list from the queue file, check that it's not empty, and create_jobs() again.
+	BUT we don't have any workers yet: cf part 17.
+
+
+17 - Python Web Crawler Tutorial - 17 - Running the Final Program-ciwWSedS1XY
+
+	Code of create_workers() and work().
+	In create_workers():
+		| t.deamon = True
+		This makes sure that all the threads run as deamon processes and die if the main thread is killed.
+	In work():
+		This is just a function that tells the workers (threads) to do the next job in the thread queue.
+		| url = queue.gets()
+		This gets what has been added to the queue with "queue.put(link)" in create_jobs().
+		| Spider.crawl_page(threading.current_thread().name, url)
+		Here we use a static method because we did not create multiple Spiders manually. It's different threads that are executed in parallel using the same static code.
+		| queue.task_done()
+		This is to make the next queue.gets() possible.
