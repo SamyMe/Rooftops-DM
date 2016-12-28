@@ -1,30 +1,32 @@
 #!/usr/bin/env python3
+import os
 import requests
 from bs4 import BeautifulSoup
 
 
-# page_url = "http://www.immostreet.com/Listing/Search?sectionName=Rental&filter_place_id=55&set_localisation=Paris&place_id=4832012&search_type=6&property_type_id=1"
-#
-# path = "first_page.txt"
-#
-# page = ""
-# if False:
-#     page = requests.get(page_url).text
-#     with open(path, 'w') as f:
-#         f.write(page)
-# else:
-#     with open(path, 'r') as f:
-#         page = f.read()
-#
-#
-#
-# soup = BeautifulSoup(page, 'html.parser')
-# print(soup.find_all("div", { "class" : "item" }))
+path = "seloger.txt"
+page = ""
+if not os.path.isfile(path):
+    # print("Page comes from request")
+    url = "http://www.seloger.com/list.htm?cp=75&idtt=1&idtypebien=1%2c2"
+    user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
+    r = requests.get(url, headers={'user-agent': user_agent})
+    page = r.text
+    with open(path, 'w') as f:
+        f.write(page)
+else:
+    # print("Page comes from local file")
+    with open(path, 'r') as f:
+        page = f.read()
 
 
+soup = BeautifulSoup(page, 'html.parser')
 
-page_url = "http://www.seloger.com/immobilier/locations/immo-paris-75/bien-appartement/"
-ua = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
-header = {'user-agent': ua}
-r = requests.get(page_url, headers=header)
-print(r.text)
+data = soup.find_all("article")  # first we extract all the articles in the list
+
+a_tags = data[0].select('h2 > a')  # selection of the title's tag
+assert len(a_tags) == 1
+title = a_tags[0]["title"]
+href = a_tags[0]["href"]
+print(title)
+print(href)
