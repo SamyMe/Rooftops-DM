@@ -5,6 +5,7 @@ CANDIDATE WEBSITES TO CRAWL
 		8304 ads of apartments in Paris
 		Note: uses ajax
 		http://www.seloger.com/
+		http://www.seloger.com/list.htm?cp=75&idtt=1&idtypebien=1%2c2
 		http://www.seloger.com/immobilier/locations/immo-paris-75/bien-appartement/
 	IMMOSTREET
 		7612 ads of apartments in Paris
@@ -52,13 +53,16 @@ CANDIDATE WEBSITES TO CRAWL
 			- select only apartments and not houses and stuff
 
 
-OTHER LINKS
+To know the user agent
+	http://www.whatsmyua.com/
 
-	Paris GeoJson
-		https://github.com/codeforamerica/click_that_hood/blob/master/public/data/paris.geojson
-		https://www.slate.fr/story/89443/carte-interactive-terrasses-cafes-paris
-		https://blandinelc.carto.com/tables/arrondissements_osm_paris/public
-		http://global.mapit.mysociety.org/area/29746.html
 
-	How to get the area of a geojson polygon
-		https://github.com/mapbox/geojson-area
+Paris GeoJson
+	https://github.com/codeforamerica/click_that_hood/blob/master/public/data/paris.geojson
+	https://www.slate.fr/story/89443/carte-interactive-terrasses-cafes-paris
+	https://blandinelc.carto.com/tables/arrondissements_osm_paris/public
+	http://global.mapit.mysociety.org/area/29746.html
+
+
+To get the area of a geojson polygon
+	https://github.com/mapbox/geojson-area
