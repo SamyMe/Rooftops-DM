@@ -47,11 +47,6 @@ CANDIDATE WEBSITES TO CRAWL
 		Note: uses ajax
 		http://www.entreparticuliers.com/immobilier-location/
 
-	/!\
-		When making a search, we should be careful to:
-			- select Paris THE CITY and NOT Paris THE DEPARTEMENT
-			- select only apartments and not houses and stuff
-
 
 To know the user agent
 	http://www.whatsmyua.com/
