@@ -3,6 +3,7 @@ CANDIDATE WEBSITES TO CRAWL
 
 	SELOGER
 		8304 ads of apartments in Paris
+		Note: uses ajax
 		http://www.seloger.com/
 		http://www.seloger.com/immobilier/locations/immo-paris-75/bien-appartement/
 	IMMOSTREET
@@ -42,7 +43,7 @@ CANDIDATE WEBSITES TO CRAWL
 		https://www.orpi.com/recherche/rent?realEstateTypes%5B%5D=appartement&locations%5B%5D=paris-metropole&sort=date-down&layoutType=mixte
 	ENTRE-PARTICULIERS
 		unknown nb of ads of apartments in Paris
-		Malus: may be trickier to crawl because it uses ajax
+		Note: uses ajax
 		http://www.entreparticuliers.com/immobilier-location/
 
 	/!\
