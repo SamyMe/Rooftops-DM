@@ -1,0 +1,18 @@
+
+SHORT TERM
+
+    Create a crawler for seloger.com
+
+
+LONG TERM
+
+    In the end maybe we could have a crawler for each website in a different class.
+        The 3 main sites are seloger.com, immostreet.com and explorimmo.com.
+    Create maps of Paris with the prices per area.
+    Try to visualize the shapes of the correlations between prices/nb_of_rooms/area etc.
+    Display the variance in prices depending on the location.
+    Use nltk to see if a different vocabulary is used depending on whether it's an expensive appartment or not.
+    Use k-mean, t-sne and co. to cluster the ads together.
+    Figure out what are the most important features that determine the price, etc.
+    Try to come up with a strategy to find the best appartment given certain conditions.
+        Ex: I'm looking for an appartment like whatever, which one is the best?
