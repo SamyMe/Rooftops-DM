@@ -1,0 +1,8 @@
+161228
+    Comparison of different websites in info.txt.
+        We'll probably try seloger.com, immostreet.com and explorimmo.com
+    Addition of a functional multithreaded crawler in demos_thenewboston/
+
+161229
+    First successful request of seloger.com.
+        It did not work before because the header of the request was not correct.
