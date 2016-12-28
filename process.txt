@@ -1,0 +1,8 @@
+161228
+    B
+        - So I've made a comparison of different websites in info.txt. I think we should try seloger.com, immostreet.com and explorimmo.com
+        - In demos_thenewboston/ there is a functional multithreaded crawler. It uses an architecture that we don't need to follow at all, but it can give good ideas.
+
+161229
+    B
+        - What I said was wrong. It's not because of javascript that I wasn't able to crawl seloger.com, it was because the header of the request was not correct. Here is an update of the crawl in first_draft.py
