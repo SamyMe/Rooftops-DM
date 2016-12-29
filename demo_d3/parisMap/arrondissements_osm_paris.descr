@@ -1,0 +1,22 @@
+{"type": "FeatureCollection", "features": [
+
+	{
+	"type":"Feature",
+	"geometry":{
+		"type":"MultiPolygon",
+		"coordinates":
+			[[[[2.320902,48.863057],[2.332909,48.85935],[2.333267,48.858266],[2.328421,48.851827],[2.316573,48.846824],[2.313728,48.845934],[2.310526,48.847987],[2.307339,48.847139],[2.289824,48.858229],[2.295157,48.861992],[2.301591,48.863474],[2.318543,48.863778],[2.320902,48.863057]]]]},
+	"properties": {
+		"cartodb_id":57,
+		"insee":75107,
+		"nom":"7e Arrondissement",
+		"wikipedia":"fr:7e arrondissement de Paris",
+		"surf_m2":4090694}
+	}
+
+
+]}
+
+
+Source : https://blandinelc.carto.com/tables/arrondissements_osm_paris/public
+
