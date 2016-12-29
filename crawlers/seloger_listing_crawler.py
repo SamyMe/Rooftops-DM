@@ -22,10 +22,9 @@ def compose_url(min_price, page_nb):
             + "&LISTING-LISTpg=" + str(page_nb))  # current page number
 
 
-min_price, page_nb = 0, 1
 ads = {}
-n_results = -1
-cur_min_price, cur_min_ad = -1, None
+min_price, page_nb = 0, 1
+n_results, cur_min_price = -1, -1
 
 
 while True:
@@ -75,11 +74,9 @@ while True:
             price_str = price_str.replace(c, "")
         ad_dict["price"] = int(price_str)
 
-        # fill ads dict, update cur_min_price and update cur_min_ad
+        # fill ads dict and update cur_min_price
         ads[ad_id] = ad_dict
-        if cur_min_price < ad_dict["price"]:
-            cur_min_price = ad_dict["price"]
-            cur_min_ad = ad_id
+        cur_min_price = max(cur_min_price, ad_dict["price"])
 
     # update the json file incrementally
     json_path = "seloger_listing_tmp.json"
