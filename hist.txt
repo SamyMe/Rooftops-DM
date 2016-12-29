@@ -6,3 +6,9 @@
 161229
     First successful request of seloger.com.
         It did not work before because the header of the request was not correct.
+    First successful crawling of the listing of seloger.com.
+        We don't have the dataset yet. Only the listing has been crawled and not the ads themselves.
+        For now, a partial list of the ads is already in seloger_listing.json.
+            It contains about 7900 links out of about 8300.
+        The reason why the list is not complete is because of a ban from the website
+            To fight against that we'll have to torify the project.
