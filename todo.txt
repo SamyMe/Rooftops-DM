@@ -1,7 +1,7 @@
 
 SHORT TERM
 
-    Torification of the crawler
+    Torification of the crawler  [kinda done ? need to be checked]
     Full check of seloger_listing_crawler.py
     Re-crawl
 

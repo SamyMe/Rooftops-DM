@@ -61,3 +61,5 @@ Paris GeoJson
 
 To get the area of a geojson polygon
 	https://github.com/mapbox/geojson-area
+
+SOCKS5 requirements : requests[socks] after updating pip 
