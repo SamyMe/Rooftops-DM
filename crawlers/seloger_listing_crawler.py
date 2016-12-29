@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import os
 import json
 import requests
@@ -26,11 +27,16 @@ ads = {}
 min_price, page_nb = 0, 1
 n_results, cur_min_price = -1, -1
 
+# After starting tor
+tor  = "socks5://127.0.0.1:9150/"
+proxyDict = { 
+              "http" : tor, 
+            }
 
 while True:
     # extraction of the soup of the page
     url = compose_url(min_price, page_nb)
-    page = requests.get(url, headers={'user-agent': USER_AGENT}).text
+    page = requests.get(url, headers={'user-agent': USER_AGENT}, proxies=proxyDict).text
     # with open("seloger.txt", 'r') as f:
     #     page = f.read()
     soup = BeautifulSoup(page, 'html.parser')
