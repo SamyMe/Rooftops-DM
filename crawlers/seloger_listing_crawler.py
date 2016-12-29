@@ -114,7 +114,7 @@ while True:
         page_nb = 1
     assert page_nb < 101  # there are no more than 100 pages at a time in seloger.com
 
-    if count % 500 == 0 :
+    if count % 20 == 0 :
     	# Asking for another IP address
         with Controller.from_port() as controller:
             controller.authenticate()
@@ -129,6 +129,9 @@ while True:
             exit_desc = controller.get_network_status(exit_fp, None)
             exit_address = exit_desc.address if exit_desc else 'unknown'
             print ("  address: %s" % exit_address)
+
+    count += 1
+
 
 print(len(ads))
 
