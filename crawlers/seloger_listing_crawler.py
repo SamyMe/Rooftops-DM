@@ -5,6 +5,9 @@ import json
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
+from stem import Signal
+from stem.control import Controller
+
 
 
 USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64)"
@@ -109,6 +112,10 @@ while True:
         min_price = cur_min_price
         page_nb = 1
     assert page_nb < 101  # there are no more than 100 pages at a time in seloger.com
+
+    with Controller.from_port() as controller:
+        controller.authenticate()
+        controller.signal(Signal.NEWNYM)
 
 print(len(ads))
 
