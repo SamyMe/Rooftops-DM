@@ -1,7 +1,22 @@
 
 SHORT TERM
 
-    Create a crawler for seloger.com
+    Torification of the crawler
+    Full check of seloger_listing_crawler.py
+    Re-crawl
+
+
+MID TERM
+
+    Addition of the ad_crawler next to the current listing_crawler
+
+    Small t-sne demo on the iris dataset
+
+    Creation of map of Paris in a d3 block.
+
+    Why are len(ads) and n_results different at the end of the crawl?
+        Is this really because of the ban?
+        Check that links are not inserted twice?
 
 
 LONG TERM
