@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from pprint import pprint
 from stem import Signal
 from stem.control import Controller
-
+from stem import CircStatus
 
 
 USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64)"
@@ -36,6 +36,7 @@ proxyDict = {
               "http" : tor, 
             }
 
+count = 0
 while True:
     # extraction of the soup of the page
     url = compose_url(min_price, page_nb)
@@ -113,9 +114,21 @@ while True:
         page_nb = 1
     assert page_nb < 101  # there are no more than 100 pages at a time in seloger.com
 
-    with Controller.from_port() as controller:
-        controller.authenticate()
-        controller.signal(Signal.NEWNYM)
+    if count % 500 == 0 :
+    	# Asking for another IP address
+        with Controller.from_port() as controller:
+            controller.authenticate()
+            controller.signal(Signal.NEWNYM)
+
+            for circ in controller.get_circuits():
+                if circ.status != CircStatus.BUILT:
+                    continue
+
+            exit_fp, exit_nickname = circ.path[-1]
+
+            exit_desc = controller.get_network_status(exit_fp, None)
+            exit_address = exit_desc.address if exit_desc else 'unknown'
+            print ("  address: %s" % exit_address)
 
 print(len(ads))
 
