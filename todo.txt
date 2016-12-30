@@ -31,3 +31,12 @@ LONG TERM
     Figure out what are the most important features that determine the price, etc.
     Try to come up with a strategy to find the best appartment given certain conditions.
         Ex: I'm looking for an appartment like whatever, which one is the best?
+
+
+LIST OF VIZ FOR THE PRESENTATION
+
+    The 2 histograms of prices (?)
+        - to show the trend when we get to luxurious appartements
+        - to show that people like round number
+        And a picture of the most expensive appartement with the eiffel tower for effect
+    Histograms of areas and price per m2 (?)
