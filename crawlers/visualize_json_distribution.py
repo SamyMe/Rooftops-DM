@@ -1,14 +1,23 @@
 #!/usr/bin/env python3
+import argparse
 import json
 import os
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-# if there is no json simply return
-json_path = "seloger_listing_tmp.json"
+# get json path
+parser = argparse.ArgumentParser()
+parser.add_argument('--path', help='Path to the .json')
+args = parser.parse_args()
+json_path = args.path
+
+# handle errors
+if json_path is None:
+    print("Please provide a path to a json listing with '--path'")
+    sys.exit(0)
 if not os.path.isfile(json_path):
-    import sys
     print("The file '" + json_path + "' does not exist!")
     sys.exit(0)
 
@@ -17,7 +26,7 @@ json_ads = {}
 with open(json_path, 'rt') as f:
     json_ads = json.loads(f.read())
 prices = sorted([json_ads[ref]["price"] for ref in json_ads])
-bins = np.linspace(prices[0], prices[-1], num=20)
+bins = np.linspace(prices[0], prices[-1], num=100)
 
 #visualize the data
 print("Nb of ads:", len(prices))
