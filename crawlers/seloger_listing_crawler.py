@@ -31,7 +31,7 @@ def compose_url(min_price, page_nb):
            + "&pxmin=" + str(min_price)  # min price in €
            + "&tri=a_px"  # results sorted by price (in ascending order)
            + "&LISTING-LISTpg=" + str(page_nb))  # current page number
-    # print(url)
+    # print(url)  # for verbosity
     return url
 
 def extract_n_ads(min_price):
@@ -65,6 +65,10 @@ def update_json(path, new_ads):
     json_dump = json.dumps(json_ads, indent=4)
     with open(JSON_PATH, 'w') as f:
         f.write(json_dump)
+
+
+subprocess.call(["systemctl", "restart", "tor"])  # just in case
+time.sleep(5)  # wait for the end of the restart
 
 
 ads = {}
@@ -136,7 +140,7 @@ while True:
         page_nb = 1
     assert page_nb < 101  # there are no more than 100 pages at a time in seloger.com
 
-    if count % 20 == 0 :
+    if count % 20 == 0 and count != 0:
         subprocess.call(["systemctl", "restart", "tor"])
         time.sleep(5)  # wait for the end of the restart
         print("ID: ", requests.get("http://httpbin.org/ip", proxies=PROXIES).text)
