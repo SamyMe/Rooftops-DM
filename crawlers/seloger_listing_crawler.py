@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 import os
 import json
+import subprocess
+import time
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
@@ -10,54 +12,80 @@ from stem.control import Controller
 from stem import CircStatus
 
 
+PROXIES = {
+    'http': 'socks5://localhost:9050',
+    'https': 'socks5://localhost:9050'
+}
 USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64)"
               + "AppleWebKit/537.36 (KHTML, like Gecko)"
               + "Chrome/55.0.2883.87"
               + "Safari/537.36")
+JSON_PATH = "seloger_listing_tmp.json"
 
 
 def compose_url(min_price, page_nb):
-    return ("http://www.seloger.com/list.htm"
-            + "?idtt=1"  # renting=1, selling=2
-            + "&cp=75"  # "code postal" of Paris
-            + "&idtypebien=1"  # only appartements
-            + "&pxmin=" + str(min_price)  # min price in €
-            + "&tri=a_px"  # results sorted by price (in ascending order)
-            + "&LISTING-LISTpg=" + str(page_nb))  # current page number
+    url = ("http://www.seloger.com/list.htm"
+           + "?idtt=1"  # renting=1, selling=2
+           + "&cp=75"  # "code postal" of Paris
+           + "&idtypebien=1"  # only appartements
+           + "&pxmin=" + str(min_price)  # min price in €
+           + "&tri=a_px"  # results sorted by price (in ascending order)
+           + "&LISTING-LISTpg=" + str(page_nb))  # current page number
+    # print(url)
+    return url
+
+def extract_n_ads(min_price):
+    # extraction of the page's soup
+    url = compose_url(min_price, 1)
+    page = requests.get(url, headers={'user-agent': USER_AGENT}, proxies=PROXIES).text
+    soup = BeautifulSoup(page, 'html.parser')
+
+    # extraction of n_ads
+    n_ads_tags = soup.findAll("div", {"class": "title_nbresult"})
+    assert len(n_ads_tags) == 1  # there should be a single result count
+    n_ads_str = n_ads_tags[0].contents[0]
+    for c in [" ", " ", "annonce", "s"]:  # /!\ the 2 invisible characters are different
+        n_ads_str = n_ads_str.replace(c, "")
+    return int(n_ads_str)
+
+def extract_max_price_from_json(path):
+    if not os.path.isfile(path):
+        return 0
+    with open(path, 'rt') as f:
+        json_ads = json.loads(f.read())
+    prices = sorted([json_ads[ref]["price"] for ref in json_ads])
+    return prices[-1]
+
+def update_json(path, new_ads):
+    json_ads = {}
+    if os.path.isfile(JSON_PATH):
+        with open(JSON_PATH, 'rt') as f:
+            json_ads = json.loads(f.read())
+    json_ads.update(new_ads)
+    json_dump = json.dumps(json_ads, indent=4)
+    with open(JSON_PATH, 'w') as f:
+        f.write(json_dump)
 
 
 ads = {}
-min_price, page_nb = 0, 1
-n_results, cur_min_price = -1, -1
+min_price = extract_max_price_from_json(JSON_PATH)
+page_nb = 1
+local_n_ads = extract_n_ads(min_price)
+total_n_ads = extract_n_ads(0)
+cur_min_price = -1
 
-# After starting tor
-tor  = "socks5://127.0.0.1:9150/"
-proxyDict = { 
-              "http" : tor, 
-            }
 
 count = 0
 while True:
     # extraction of the soup of the page
     url = compose_url(min_price, page_nb)
-    page = requests.get(url, headers={'user-agent': USER_AGENT}, proxies=proxyDict).text
-    # with open("seloger.txt", 'r') as f:
-    #     page = f.read()
+    page = requests.get(url, headers={'user-agent': USER_AGENT}, proxies=PROXIES).text
     soup = BeautifulSoup(page, 'html.parser')
 
-    # extraction of n_results
-    if min_price == 0 and page_nb == 1:  # if first call
-        assert n_results == -1  # n_results should be defined only the first time
-        n_results_tags = soup.findAll("div", {"class": "title_nbresult"})
-        assert len(n_results_tags) == 1  # there should be a single result count
-        n_results_str = n_results_tags[0].contents[0]
-        for c in [" ", " ", "annonces"]:  # /!\ the 2 invisible characters are different
-            n_results_str = n_results_str.replace(c, "")
-        n_results = int(n_results_str)
-        print(n_results)
-
     # to know where we're at
-    print(len(ads), "/", n_results)
+    print("n_extracted:" + str(len(ads))
+          + " | n_local:" + str(local_n_ads)
+          + " | n_total:" + str(total_n_ads))
 
     # extraction of the ads and their info
     ad_tags = soup.find_all("article", {"class": ["listing", "life_annuity"]})  # list of ads
@@ -89,15 +117,7 @@ while True:
         cur_min_price = max(cur_min_price, ad_dict["price"])
 
     # update the json file incrementally
-    json_path = "seloger_listing_tmp.json"
-    json_ads = {}
-    if os.path.isfile(json_path):
-        with open(json_path, 'rt') as f:
-            json_ads = json.loads(f.read())
-    json_ads.update(ads)
-    json_dump = json.dumps(ads, indent=4)
-    with open(json_path, 'w') as f:
-        f.write(json_dump)
+    update_json(JSON_PATH, ads)
 
     # prepare the move to next page
     next_buttons = soup.findAll("a", {"class": "pagination_next"})
@@ -109,34 +129,28 @@ while True:
     else:
         assert(len(next_buttons) == 0)
         if page_nb < 100:
+            with open("last_html_before_break.html", 'w') as f:
+                f.write(page)
             break
         min_price = cur_min_price
         page_nb = 1
     assert page_nb < 101  # there are no more than 100 pages at a time in seloger.com
 
     if count % 20 == 0 :
-    	# Asking for another IP address
-        with Controller.from_port() as controller:
-            controller.authenticate()
-            controller.signal(Signal.NEWNYM)
-
-            for circ in controller.get_circuits():
-                if circ.status != CircStatus.BUILT:
-                    continue
-
-            exit_fp, exit_nickname = circ.path[-1]
-
-            exit_desc = controller.get_network_status(exit_fp, None)
-            exit_address = exit_desc.address if exit_desc else 'unknown'
-            print ("  address: %s" % exit_address)
-
+        subprocess.call(["systemctl", "restart", "tor"])
+        time.sleep(5)  # wait for the end of the restart
+        print("ID: ", requests.get("http://httpbin.org/ip", proxies=PROXIES).text)
+        # with Controller.from_port() as controller:
+        #     controller.authenticate()
+        #     controller.signal(Signal.NEWNYM)
+        #     for circ in controller.get_circuits():
+        #         if circ.status != CircStatus.BUILT:
+        #             continue
+        #     exit_fingerprint, exit_nickname = circ.path[-1]
+        #     exit_desc = controller.get_network_status(exit_fingerprint, None)
+        #     exit_address = exit_desc.address if exit_desc else 'unknown'
+        #     print ("  address: %s" % exit_address)
     count += 1
 
 
-print(len(ads))
-
-
-# import sys
-# sys.exit(0)
-# with open("seloger_tmp.txt", 'w') as f:
-#     f.write(requests.get(compose_url(0, 100), headers={'user-agent': USER_AGENT}).text)
+print("n_extracted:" + str(len(ads)))
