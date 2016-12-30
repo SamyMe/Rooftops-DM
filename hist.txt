@@ -12,3 +12,15 @@
             It contains about 7900 links out of about 8300.
         The reason why the list is not complete is because of a ban from the website
             To fight against that we'll have to torify the project.
+    First t-sne try.
+    First d3 map of Paris.
+    First torification of the crawler.
+
+161230
+    The crawling of the listing is now complete! AND 2 LISTINGS ARE READY (01 is truncated, 02 is complete)
+        Addition of visualize_json_distribution.py which gives interesting results on the truncated file listing (01).
+        The crawler:
+            - now has a better modularity
+            - outputs the last html it received in last_html_before_break.html for debug
+            - its tor system has been slightly modified (but it's not necessarily better)
+            - and most importantly, it can restart where it was in case of interruption!
