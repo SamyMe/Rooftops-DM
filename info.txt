@@ -26,6 +26,10 @@ CANDIDATE WEBSITES TO CRAWL
 		2313 ads of apartments in Paris
 		http://www.logic-immo.com/
 		http://www.logic-immo.com/appartement-paris/location-appartement-paris-75-100_1.html
+	MEILLEURS-AGENTS
+		1651 ads of apartments in Paris
+		http://www.meilleursagents.com/
+		http://www.meilleursagents.com/immobilier/recherche/?redirect_url=&view_mode=list&sort_mode=ma_contract%7Cdesc&transaction_type=369681778&buyer_search_id=&user_email=&place_ids%5B%5D=114&place_title=&item_types%5B%5D=369681781&item_area_min=&item_area_max=&budget_min=&budget_max=
 	A-VENDRE-A-LOUER
 		1438 ads of apartments in Paris
 		http://www.avendrealouer.fr/
