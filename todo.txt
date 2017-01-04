@@ -1,42 +1,63 @@
 
-SHORT TERM
+SHORT TERM:
 
-    Torification of the crawler  [kinda done ? need to be checked]
-    Full check of seloger_listing_crawler.py
-    Re-crawl
+    L
+        Addition of the ad_crawler next to the current listing_crawler
+        Small t-sne demo on the iris dataset
+    S
+        Histograms, scatter plots
+        Map continuous data to intervals
+    LS
+        Demo html, organisation
 
+========
 
-MID TERM
+STRUCTURE:
+    histograms
+        The 2 histograms of prices (?)
+            - to show the trend when we get to luxurious appartements
+            - to show that people like round number
+            And a picture of the most expensive appartement with the eiffel tower for effect
+        Try to visualize the shapes of the correlations between prices/nb_of_rooms/area etc.
+    paris map
+        Create maps of Paris with the prices per area.
+        Display the variance in prices depending on the location.
+        Just Area, Prices ...
+    tsne (pca)
+        With and without autoencoders?
+        Depending on the representation
+        Color depending on price, area, price per m²
+        Comments:
+            JS implementation tested, need to add interaction (make viz move), not possible because quadratic, need to use Barnes-Hut in sklearn
 
-    Addition of the ad_crawler next to the current listing_crawler
+========
 
-    Small t-sne demo on the iris dataset [JS implementation tested, need to add interaction (make viz move)]
+DATA MINING
 
-    Creation of map of Paris in a d3 block. [done]
+    Figure out what are the most important features that determine the price/location/etc.
+    clustering, kmeans, hierachical methods
+    outlier detections
 
-    Why are len(ads) and n_results different at the end of the crawl?
-        Is this really because of the ban?
-        Check that links are not inserted twice?
+========
 
+Mess:
+    Torification of the crawler [kinda done ? need to be checked]
+    Full check of seloger_listing_crawler.py and Re-crawl (?)
 
-LONG TERM
+Why are len(ads) and n_results different at the end of the crawl?
+    Is this really because of the ban?
+    Check that links are not inserted twice?
 
-    In the end maybe we could have a crawler for each website in a different class.
-        The 3 main sites are seloger.com, immostreet.com and explorimmo.com.
-    Create maps of Paris with the prices per area.
-    Try to visualize the shapes of the correlations between prices/nb_of_rooms/area etc.
-    Display the variance in prices depending on the location.
-    Use nltk to see if a different vocabulary is used depending on whether it's an expensive appartment or not.
-    Use k-mean, t-sne and co. to cluster the ads together.
-    Figure out what are the most important features that determine the price, etc.
-    Try to come up with a strategy to find the best appartment given certain conditions.
-        Ex: I'm looking for an appartment like whatever, which one is the best?
+Long term:
 
+Use nltk to see if a different vocabulary is used depending on whether it's an expensive appartment or not. (???)
 
-LIST OF VIZ FOR THE PRESENTATION
+In the end maybe we could have a crawler for each website in a different class.
+The 3 main sites are seloger.com, immostreet.com and explorimmo.com.
 
-    The 2 histograms of prices (?)
-        - to show the trend when we get to luxurious appartements
-        - to show that people like round number
-        And a picture of the most expensive appartement with the eiffel tower for effect
-    Histograms of areas and price per m2 (?)
+Try to come up with a strategy to find the best appartment given certain conditions.
+    Ex: I'm looking for an appartment like whatever, which one is the best?
+
+========
+
+GARBAGE:
