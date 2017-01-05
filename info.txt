@@ -50,6 +50,8 @@ CANDIDATE WEBSITES TO CRAWL
 		unknown nb of ads of apartments in Paris
 		Note: uses ajax
 		http://www.entreparticuliers.com/immobilier-location/
+	CITYA
+		https://www.citya.com/
 
 
 To know the user agent
@@ -66,4 +68,4 @@ Paris GeoJson
 To get the area of a geojson polygon
 	https://github.com/mapbox/geojson-area
 
-SOCKS5 requirements : requests[socks] after updating pip 
+SOCKS5 requirements : requests[socks] after updating pip
