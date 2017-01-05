@@ -1,13 +1,18 @@
-var height = 500,
-    width = 1000,
+var height = 200,
+    width = 1500,
     barOffset = 0;
 
-var title = [	
-			"", 
-			];
+var title = [	"Stocks UP - Words", 
+		"Stocks UP - Bigrams",
+		"Stocks DOWN - Words", 
+		"Stocks DOWN - Bigrams"
+	];
 
 var files = [ 
-		"prices.csv",
+		"reddit-data/fd-upData.csv",
+		"reddit-data/bfd-upData.csv",
+		"reddit-data/fd-downData.csv",
+		"reddit-data/bfd-downData.csv",
 	];
 
 var color = [
@@ -22,8 +27,8 @@ d3.csv(d, function(data){
 
 	var yscale = d3.scale.linear()
 		.domain([
-			d3.min(data, function(d){return parseInt(d.price);}),
-			d3.max(data, function(d){return parseInt(d.price);})
+			d3.min(data, function(d){return parseInt(d.freq);}),
+			d3.max(data, function(d){return parseInt(d.freq);})
 		])
 		.range([0, height]);
 
@@ -40,13 +45,13 @@ d3.csv(d, function(data){
 		.style('fill', color[i])
 		.attr('width', width/nb)
 		.attr('height', function(d) {
-		    return yscale(d.price);
+		    return yscale(d.freq);
 		})
 		.attr('x', function(d,i) {
 		    return i *(width/nb + barOffset);
 		})
 		.attr('y', function(d) {
-		    return height - yscale(d.price);
+		    return height - yscale(d.freq);
 		})
 
     .on('mouseover', function(d) {

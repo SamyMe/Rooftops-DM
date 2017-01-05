@@ -75,3 +75,8 @@ SOCKS5 requirements
 Histogram examples in D3 :
 	http://blockbuilder.org/search#text=Histogram
 	https://plot.ly/javascript/histograms/
+	http://bl.ocks.org/mbostock
+
+Discretize:
+	https://github.com/d3/d3-scale/blob/master/README.md#scaleQuantile
+

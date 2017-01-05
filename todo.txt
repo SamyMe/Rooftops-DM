@@ -60,4 +60,15 @@ Try to come up with a strategy to find the best appartment given certain conditi
 
 ========
 
+Presentation:
+	Why this subject ?
+	To whom is it addressed ?
+	Choices: technical ...etc
+	Inovative things ?
+
+	Argue choices:
+		color choices => ref articles seen in course
+
+========
+
 GARBAGE:
