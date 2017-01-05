@@ -68,4 +68,10 @@ Paris GeoJson
 To get the area of a geojson polygon
 	https://github.com/mapbox/geojson-area
 
-SOCKS5 requirements : requests[socks] after updating pip
+SOCKS5 requirements
+	updating pip
+	requests[socks]
+
+Histogram examples in D3 :
+	http://blockbuilder.org/search#text=Histogram
+	https://plot.ly/javascript/histograms/
