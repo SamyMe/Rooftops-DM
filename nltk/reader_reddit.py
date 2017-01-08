@@ -10,14 +10,11 @@ from nltk import FreqDist
 from nltk.collocations import BigramCollocationFinder
 from nltk.metrics import BigramAssocMeasures
 
-file_name = "../crawlers/data/tmp_seloger_desc.json"
-
-
-def readData():
+def read_data(file_name):
     # Tokenize
     tokenizer = RegexpTokenizer(r'\w+')
 
-    # Read Reddit Data
+    # Read ads Data
     with open(file_name, 'rt') as f:
         ads = json.loads(f.read())
 
@@ -32,7 +29,7 @@ def readData():
                             word.lower() for word in tokenizer.tokenize(desc) if
                                 (
                                 word.lower() not in stopwords.words('french')
-				and	len(word) > 1
+                and len(word) > 1
                 and not word.isdigit()
                                 )
                             ]
@@ -45,7 +42,7 @@ def readData():
     pickle.dump(descriptions, f)
     f.close()
 
-def extractFreq():
+def extract_freq():
     f = open('data/processed_descr.pkl', 'rb')
     desc = pickle.load(f)
     f.close()
@@ -73,7 +70,7 @@ def extractFreq():
     f.close()
 
 
-def convertCSV(input_file, word_threshold=1, bigram_threshold=1):
+def convert_CSV(input_file, word_threshold=1, bigram_threshold=1):
     f = open(input_file, 'rb')
     fd, bcf = pickle.load(f)
 
@@ -93,9 +90,59 @@ def convertCSV(input_file, word_threshold=1, bigram_threshold=1):
                 csv_writer.writerow([key[0]+" "+key[1], bfd[key]])
 
 
+def extract_words_prices(file_name, price_threshold=1):
+    # Tokenize
+    tokenizer = RegexpTokenizer(r'\w+')
+
+    # Read ads Data
+    with open(file_name, 'rt') as f:
+        ads = json.loads(f.read())
+
+        words_prices = {}
+
+        for ad in ads:
+
+            desc = ads[ad]['text']
+
+            # Before Filtering
+            desc_filtered = [
+                            word.lower() for word in tokenizer.tokenize(desc) if
+                                (
+                                word.lower() not in stopwords.words('french')
+                and len(word) > 1
+                and not word.isdigit()
+                                )
+                            ]
+
+            # After Filtering
+            for w in desc_filtered:
+                if w in words_prices:
+                    words_prices[w][0] += 1
+                    words_prices[w][1] += ads[ad]['price']
+
+                else:
+                    words_prices[w] = [1, ads[ad]['price']]
+
+        # Making the mean
+        for w in words_prices:
+            words_prices[w] = words_prices[w][1] / words_prices[w][0] 
+
+    print(words_prices)
+
+    # Write to CSV
+    with open("data/words_prices.csv", 'w') as f:
+        csv_writer = csv.writer(f)
+        csv_writer.writerow(["word", "price"])
+        for word in words_prices:
+            if words_prices[word] > price_threshold:
+                csv_writer.writerow([word, words_prices[word]])
+
 
 if __name__ == "__main__":
 
-    # readData()
-    # extractFreq()
-    convertCSV("data/freqs_descr.pkl", 1, 1)
+    file_name = "../crawlers/data/tmp_seloger_desc.json"
+
+    # read_data(file_name)
+    # extract_freq()
+    # convert_CSV("data/freqs_descr.pkl", 1, 1)
+    extract_words_prices(file_name)
