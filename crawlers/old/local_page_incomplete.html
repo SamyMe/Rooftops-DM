@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Cookie" /><link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ultra" /><title>
+
+</title>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#nos-activites").css('min-height', $(window).height() - $("#footer-motif").height() - $(".footer").height() - $(".redc").height());
+        });
+    </script>
+    <style type="text/css">
+        body {
+            /* color: #353535; */
+            font-family: "Roboto Condensed",sans-serif;
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 21px;
+            margin: 0;
+            overflow-x: hidden;
+            padding: 0;
+        }
+        * {
+            outline: medium none;
+            transition: color 0.2s ease 0s, background 0.2s ease 0s;
+        }
+        *, *:after, *:before {
+            box-sizing: border-box;
+        }
+        .fileariane {
+            border-bottom: 1px dashed #6d6e71;
+            clear: both;
+            padding-bottom: 9px;
+            padding-top: 21px !important;
+        }
+        .fil_1 {
+            color: #6d6e71;
+            font-family: "Cookie",cursive;
+            font-size: 34px;
+        }
+        .fil_2 {
+            color: #db3021;
+            font-family: "Ultra",serif;
+        }
+        .redc {
+            background-color: #c4071b;
+            height: 45px;
+            width: 100%;
+        }
+        .hwrap {
+            margin: 0 auto;
+            width: 960px;
+        }
+        .hwrap .hlogo {
+            float: left;
+            height: 45px;
+            position: relative;
+            width: 125px;
+        }
+        .hlogo a {
+            background: url("http://www.groupe-seloger.com/wp-content/themes/seLoger/images/logo.png") no-repeat scroll center center rgba(0, 0, 0, 0);
+            display: block;
+            height: 100%;
+            text-indent: -9999px;
+        }
+        .hwrap.menu .leftmenu {
+            float: right;
+            width: 350px;
+        }
+        .hwrap.menu .leftmenu ul {
+            float: left;
+            margin: 0;
+            padding: 0;
+        }
+        .hwrap.menu .leftmenu ul li {
+            float: left;
+            list-style: outside none none;
+            margin: 0;
+            padding: 0;
+        }
+        .hwrap.menu .leftmenu ul li a {
+            border-right: 1px solid #d03a45;
+            color: #fff;
+            display: block;
+            line-height: 45px;
+            padding: 0 15px;
+            text-decoration: none;
+        }
+        .hwrap.menu .leftmenu ul li a:hover {
+            color: #e38690;
+        }
+        .footer {
+	        width:100%;
+	        background:#fff;
+	        height:45px;
+            background: none repeat scroll 0 0 #fff;
+            height: auto;
+        }
+        .footer .wrapf {
+            margin: auto;
+            width: 960px;
+        }
+        .footer .wrapf ul {
+            margin: 20px auto;
+            padding: 0;
+            text-align: center;
+        }
+        .footer .wrapf ul li {
+            display: inline-block;
+            list-style: outside none none;
+        }
+        .footer .wrapf ul li a {
+            color: #353535;
+            font-size: 13px;
+            font-weight: 300;
+            padding-left: 12px;
+            text-decoration: none;
+        }
+        .footer .wrapf ul li a:hover {
+            color: #c4071b;
+        }
+        .footer .wrapf ul li:last-child a:after {
+            display: none;
+        }
+        .footer .wrapf ul li a:after {
+            color: #353535;
+            content: "|";
+            font-weight: 300;
+            padding: 2px 0 0 12px;
+        }
+        #footer-motif {
+            background: url("http://www.groupe-seloger.com/wp-content/themes/seLoger/images/footer-motif.png") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+            height: 149px;
+            margin-top: -16px;
+            width: 100%;
+        }
+        .hwrap {
+            width: 95%;
+        }
+        .footer .wrapf {
+            width: 95%;
+        }
+        .footer .wrapf ul {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .wrapperMe {
+            margin: auto;
+            position: relative;
+            width: 960px;
+        }
+    </style>
+</head>
+<body>
+    <div class="redc">
+        <div class="hwrap menu">
+            <div class="hlogo">
+                <a href="http://www.groupe-seloger.com" title="SeLoger.com">SeLoger</a>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper interne" id="nos-activites">
+        <div class="wrapperMe">
+            <div class="wrapperMe fileariane">
+                <span class="fil_1">Bienvenue sur </span>
+                <span class="fil_2">SeLoger</span>
+                <span class="fil_1">.</span>
+                <br />
+                <span class="fil_1">Une erreur s'est produite</span>
+            </div>
+        </div>
+    </div>
+    <div id="footer-motif"></div>
+    <div class="footer">
+        <div class="wrapf">
+            <ul class="footer-ul" style="border-top: 1px solid #888;    margin-top: 0px;  margin-bottom: 10px;    padding-top: 13px;">
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://seloger.com/">SeLoger</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://immostreet.com/">Immostreet.com</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://www.selogerneuf.com/">SelogerNeuf.com</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://www.bellesdemeures.com/">BellesDemeures.com</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://www.agorabiz.com/">AgoraBiz.com</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://webimm.com/">Webimm.com</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://www.seloger.com/construire/">Selogerconstruire</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://vacances.seloger.com/">SeLoger vacances</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://www.a-gites.com/">Agites.com</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://vacances.com/">Vacances.com</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://www.lacoteimmo.com/">LaCoteImmo.com</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://www.pericles.fr/">Pericles.com</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="https://www.selogerplus.com/">SelogerPlus.com</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://www.diagorim.com/">Diagorim.com</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://home-pad.fr/">Home-pad.fr</a></li>
+	            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a target="_blank" href="http://www.poliris.fr/">Poliris.com</a></li>	
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -13,7 +13,7 @@ URL = "http://www.seloger.com/annonces/locations/appartement/paris-11eme-75/1148
 
 
 subprocess.call(["systemctl", "restart", "tor"])  # just in case
-time.sleep(2)  # wait for the end of the restart
+time.sleep(1)
 
 
 page = requests.get(URL, headers={'user-agent': USER_AGENT}, proxies=PROXIES).text
