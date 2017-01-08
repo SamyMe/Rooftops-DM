@@ -5,8 +5,8 @@ SHORT TERM:
         Addition of the ad_crawler next to the current listing_crawler
         Small t-sne demo on the iris dataset
     S
-        Histograms, scatter plots
-        Map continuous data to intervals
+        Plot a histogram of "words prices" 
+
     LS
         Demo html, organisation
 

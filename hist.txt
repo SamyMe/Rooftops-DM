@@ -24,3 +24,11 @@
             - outputs the last html it received in last_html_before_break.html for debug
             - its tor system has been slightly modified (but it's not necessarily better)
             - and most importantly, it can restart where it was in case of interruption!
+
+170107
+    Analysing word distributions in descriptions :
+    Extracting words and bigrams frequency  
+    Now we can plot a histogram of "words prices" to see what we should avoid looking for if we want a cheap house ?
+    
+    
+    
