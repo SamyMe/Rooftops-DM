@@ -7,9 +7,9 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
-from stem import Signal
-from stem.control import Controller
-from stem import CircStatus
+# from stem import Signal
+# from stem.control import Controller
+# from stem import CircStatus
 
 
 PROXIES = {

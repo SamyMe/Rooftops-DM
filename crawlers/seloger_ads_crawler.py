@@ -14,7 +14,6 @@ PROXIES = { 'http': 'socks5://localhost:9050', 'https': 'socks5://localhost:9050
 USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"
               + "Chrome/55.0.2883.87 Safari/537.36")
 PATH = os.path.dirname(os.path.abspath(__file__)) + "/local_page.html"
-URL = "http://www.seloger.com/annonces/locations/appartement/paris-11eme-75/114842571.htm"
 
 
 # argparse
@@ -30,20 +29,19 @@ DATA_DIR = args.data if args.data[-1] == "/" else args.data + "/" # "./data/ads/
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
-
+# json util functions
 def load_json(path):
     with open(path, "rt") as f:
         return json.loads(f.read())
-
 def dump_json(path, dict):
     with open(path, "wt") as f:
         f.write(json.dumps(dict, indent=4))
 
+# other util functions
 def get_keys_copy(d):
     k = sorted(list(d.keys()))
     rnd.shuffle(k)
     return k
-
 def cur_pos(prst_dict, left_dict):
     prst_len, left_len = len(prst_dict), len(left_dict)
     return str(left_len) + "+" + str(prst_len) + "=" + str(left_len + prst_len)
@@ -60,7 +58,7 @@ main_keys = get_keys_copy(main_dict)
 prst_dict = load_json(prst_path) if os.path.isfile(prst_path) else {}
 left_dict = {mk: mv for mk, mv in main_dict.items() if mk not in prst_dict}
 
-# make that files that are supposed to be present truly are
+# make sure that files that are supposed to be present truly are
 for ad_ref in prst_dict:
     assert os.path.isfile(DATA_DIR + ad_ref + ".htm")
 
@@ -81,20 +79,20 @@ while len(main_dict) > 0:
     if ad_ref not in prst_dict:
         error = False
         try:
-            page = requests.get(URL, headers={'user-agent': USER_AGENT}, proxies=PROXIES).text
+            page = requests.get(ad_url, headers={'user-agent': USER_AGENT}, proxies=PROXIES).text
         except:
             error = True
 
-        if "Une erreur s'est produite" not in page and not error:
+        if error or "Une erreur s'est produite" in page:
+            print(cur_pos(prst_dict, left_dict), "| Skipped")
+            subprocess.call(["systemctl", "restart", "tor"])
+            time.sleep(1)
+        else:
             with open(DATA_DIR + str(ad_ref) + ".htm", "wt") as f:
                 f.write(page)
             del left_dict[ad_ref]  # and that is done!
             prst_dict[ad_ref] = ad_val  # add the newly loaded ad to the prst_dict
             print(cur_pos(prst_dict, left_dict), "| Loaded")
-        else:
-            print(cur_pos(prst_dict, left_dict), "| Skipped")
-            subprocess.call(["systemctl", "restart", "tor"])
-            time.sleep(1)
 
         if count % 20 == 0:
             subprocess.call(["systemctl", "restart", "tor"])
