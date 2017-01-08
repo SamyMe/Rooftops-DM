@@ -2,23 +2,9 @@
 # -*- coding: utf-8 -*-
 import os
 import json
-import subprocess
-import time
-import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
-# from stem import Signal
-# from stem.control import Controller
-# from stem import CircStatus
-
-
-PROXIES = {
-    'http': 'socks5://localhost:9050',
-    'https': 'socks5://localhost:9050'
-}
-USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"
-              + "Chrome/55.0.2883.87 Safari/537.36")
-JSON_PATH = "seloger_listing_tmp.json"
+import utils_socks5
 
 
 def compose_url(min_price, page_nb):
@@ -35,11 +21,14 @@ def compose_url(min_price, page_nb):
 def extract_n_ads(min_price):
     # extraction of the page's soup
     url = compose_url(min_price, 1)
-    page = requests.get(url, headers={'user-agent': USER_AGENT}, proxies=PROXIES).text
+    page = utils_socks5.requests_get(url, "n ads extraction")
     soup = BeautifulSoup(page, 'html.parser')
 
     # extraction of n_ads
     n_ads_tags = soup.findAll("div", {"class": "title_nbresult"})
+    if len(n_ads_tags) != 1:
+        with open("last_html_before_break.htm", 'wt') as f:
+            f.write(page)
     assert len(n_ads_tags) == 1  # there should be a single result count
     n_ads_str = n_ads_tags[0].contents[0]
     for c in [" ", " ", "annonce", "s"]:  # /!\ the 2 invisible characters are different
@@ -65,8 +54,8 @@ def update_json(path, new_ads):
         f.write(json_dump)
 
 
-subprocess.call(["systemctl", "restart", "tor"])  # just in case
-time.sleep(5)  # wait for the end of the restart
+JSON_PATH = "seloger_listing_tmp.json"
+utils_socks5.restart_tor()
 
 
 ads = {}
@@ -79,15 +68,13 @@ cur_min_price = -1
 
 count = 0
 while True:
-    # extraction of the soup of the page
-    url = compose_url(min_price, page_nb)
-    page = requests.get(url, headers={'user-agent': USER_AGENT}, proxies=PROXIES).text
-    soup = BeautifulSoup(page, 'html.parser')
-
-    # to know where we're at
     print("n_extracted:" + str(len(ads))
           + " | n_local:" + str(local_n_ads)
           + " | n_total:" + str(total_n_ads))
+
+    url = compose_url(min_price, page_nb)
+    page = utils_socks5.requests_get(url, "listing page extraction")
+    soup = BeautifulSoup(page, 'html.parser')
 
     # extraction of the ads and their info
     ad_tags = soup.find_all("article", {"class": ["listing", "life_annuity"]})  # list of ads
@@ -122,36 +109,28 @@ while True:
     update_json(JSON_PATH, ads)
 
     # prepare the move to next page
-    next_buttons = soup.findAll("a", {"class": "pagination_next"})
-    if len(next_buttons) == 2:  # there are 2 of them in the html for some reason
-        next_url = next_buttons[0]["href"]
-        page_nb_str = next_url[next_url.find("LISTING-LISTpg=") + 15:]
-        page_nb += 1  # update page_nb so it can be crawled next iteration
-        assert (page_nb) == int(page_nb_str)  # check that the next page_nb is correct
-    else:
-        assert(len(next_buttons) == 0)
+    next_buttons = soup.findAll("a", {"title": "Page suivante"})
+    if len(next_buttons) == 0:
         if page_nb < 100:
-            with open("last_html_before_break.html", 'w') as f:
+            with open("last_html_before_break.htm", 'wt') as f:
                 f.write(page)
+            print(url)
             break
         min_price = cur_min_price
         page_nb = 1
-    assert page_nb < 101  # there are no more than 100 pages at a time in seloger.com
+    else:
+        assert len(next_buttons) == 2 or len(next_buttons) == 1
+        next_url = next_buttons[0]["href"]
+        page_nb_str = next_url[next_url.find("LISTING-LISTpg=") + 15:]
+        page_nb += 1  # update page_nb so it can be crawled next iteration
+        assert page_nb == int(page_nb_str)  # check that the next page_nb is correct
+        assert page_nb < 101  # there are no more than 100 pages at a time in seloger.com
 
     if count % 20 == 0 and count != 0:
-        subprocess.call(["systemctl", "restart", "tor"])
-        time.sleep(1)  # wait for the end of the restart
-        print("ID: ", requests.get("http://httpbin.org/ip", proxies=PROXIES).text)
-        # with Controller.from_port() as controller:
-        #     controller.authenticate()
-        #     controller.signal(Signal.NEWNYM)
-        #     for circ in controller.get_circuits():
-        #         if circ.status != CircStatus.BUILT:
-        #             continue
-        #     exit_fingerprint, exit_nickname = circ.path[-1]
-        #     exit_desc = controller.get_network_status(exit_fingerprint, None)
-        #     exit_address = exit_desc.address if exit_desc else 'unknown'
-        #     print ("  address: %s" % exit_address)
+        utils_socks5.restart_tor()
+        page = utils_socks5.requests_get("http://httpbin.org/ip", "listing page extraction")
+        print("ID: ", page)
+
     count += 1
 
 
