@@ -16,10 +16,8 @@ PROXIES = {
     'http': 'socks5://localhost:9050',
     'https': 'socks5://localhost:9050'
 }
-USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64)"
-              + "AppleWebKit/537.36 (KHTML, like Gecko)"
-              + "Chrome/55.0.2883.87"
-              + "Safari/537.36")
+USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"
+              + "Chrome/55.0.2883.87 Safari/537.36")
 JSON_PATH = "seloger_listing_tmp.json"
 
 
@@ -142,7 +140,7 @@ while True:
 
     if count % 20 == 0 and count != 0:
         subprocess.call(["systemctl", "restart", "tor"])
-        time.sleep(5)  # wait for the end of the restart
+        time.sleep(1)  # wait for the end of the restart
         print("ID: ", requests.get("http://httpbin.org/ip", proxies=PROXIES).text)
         # with Controller.from_port() as controller:
         #     controller.authenticate()
