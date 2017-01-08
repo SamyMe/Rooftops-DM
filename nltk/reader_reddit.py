@@ -10,7 +10,7 @@ from nltk import FreqDist
 from nltk.collocations import BigramCollocationFinder
 from nltk.metrics import BigramAssocMeasures
 
-file_name = "../crawlers/data/seloger_desc.json"
+file_name = "../crawlers/data/tmp_seloger_desc.json"
 
 
 def readData():
@@ -31,7 +31,7 @@ def readData():
             desc_filtered = [
                             word.lower() for word in tokenizer.tokenize(desc) if
                                 (
-                                word.lower() not in stopwords.words('french') 
+                                word.lower() not in stopwords.words('french')
 				and	len(word) > 1
                 and not word.isdigit()
                                 )
@@ -99,4 +99,3 @@ if __name__ == "__main__":
     # readData()
     # extractFreq()
     convertCSV("data/freqs_descr.pkl", 1, 1)
-    
