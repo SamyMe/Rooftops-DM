@@ -4,7 +4,7 @@ import os
 import json
 from bs4 import BeautifulSoup
 from pprint import pprint
-import utils_socks5
+import utils_socks5 as us
 
 
 def compose_url(min_price, page_nb):
@@ -21,7 +21,7 @@ def compose_url(min_price, page_nb):
 def extract_n_ads(min_price):
     # extraction of the page's soup
     url = compose_url(min_price, 1)
-    page = utils_socks5.requests_get(url, "n ads extraction")
+    page = us.requests_get(url, "n ads extraction")
     soup = BeautifulSoup(page, 'html.parser')
 
     # extraction of n_ads
@@ -55,7 +55,7 @@ def update_json(path, new_ads):
 
 
 JSON_PATH = "seloger_listing_tmp.json"
-utils_socks5.restart_tor()
+us.restart_tor()
 
 
 ads = {}
@@ -73,7 +73,7 @@ while True:
           + " | n_total:" + str(total_n_ads))
 
     url = compose_url(min_price, page_nb)
-    page = utils_socks5.requests_get(url, "listing page extraction")
+    page = us.requests_get(url, "listing page extraction")
     soup = BeautifulSoup(page, 'html.parser')
 
     # extraction of the ads and their info
@@ -127,8 +127,8 @@ while True:
         assert page_nb < 101  # there are no more than 100 pages at a time in seloger.com
 
     if count % 20 == 0 and count != 0:
-        utils_socks5.restart_tor()
-        page = utils_socks5.requests_get("http://httpbin.org/ip", "listing page extraction")
+        us.restart_tor()
+        page = us.requests_get("http://httpbin.org/ip", "listing page extraction")
         print("ID: ", page)
 
     count += 1

@@ -26,3 +26,4 @@ def requests_get(url, msg="", n_retries=10):
                 print("Request retry (" + msg + ")")
             if i < n_retries - 1:
                 restart_tor(1)
+    return None
