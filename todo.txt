@@ -69,6 +69,17 @@ Presentation:
 	Argue choices:
 		color choices => ref articles seen in course
 
+presentation
+    context
+    motivation
+    target audience
+    innovative aspects
+    limits of the approach
+
+report
+    article marked on 20
+    website marked on 15
+
 ========
 
 GARBAGE:
