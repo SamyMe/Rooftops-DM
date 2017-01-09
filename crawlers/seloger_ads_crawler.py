@@ -72,7 +72,8 @@ while len(main_dict) > 0:
         if page is None:
             print(ad_url)
             print(cur_pos(prst_dict, left_dict), "| Skipped")
-            
+            continue
+
         with open(DATA_DIR + str(ad_ref) + ".htm", "wt") as f:
             f.write(page)
         del left_dict[ad_ref]  # and that is done!
