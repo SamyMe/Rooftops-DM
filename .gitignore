@@ -96,3 +96,6 @@ ENV/
 
 # htm files are ignored, html not
 *.htm
+
+# embeddings
+nltk/data/embeddings.pkl

@@ -9,6 +9,10 @@ from nltk.corpus import stopwords
 from nltk import FreqDist
 from nltk.collocations import BigramCollocationFinder
 from nltk.metrics import BigramAssocMeasures
+from operator import itemgetter
+
+def has_numbers(inputString):
+    return any(char.isdigit() for char in inputString)
 
 def read_data(file_name):
     # Tokenize
@@ -19,18 +23,20 @@ def read_data(file_name):
         ads = json.loads(f.read())
 
         descriptions = []
+        tags = []
 
         for ad in ads:
 
             desc = ads[ad]['description']
+            tags.extend([tag.lower() for tag in ads[ad]['tags'] if not has_numbers(tag)])
 
             # Before Filtering
             desc_filtered = [
                             word.lower() for word in tokenizer.tokenize(desc) if
                                 (
                                 word.lower() not in stopwords.words('french')
-                and len(word) > 1
-                and not word.isdigit()
+                                and len(word) > 2
+                                and not has_numbers(word)
                                 )
                             ]
 
@@ -39,55 +45,54 @@ def read_data(file_name):
 
     # Save the data
     f = open('data/processed_descr.pkl','wb')
-    pickle.dump(descriptions, f)
+    pickle.dump((descriptions, tags), f)
     f.close()
 
 def extract_freq():
     f = open('data/processed_descr.pkl', 'rb')
-    desc = pickle.load(f)
+    desc, tags = pickle.load(f)
     f.close()
 
     # Freq.Dest of words in descriptions
-    fd = FreqDist(desc)
-    print(fd.elements)
-    print("Number of occurence of <séjour>: %s" % fd["séjour"])
-    print("Frequency: %s" % fd.freq("séjour"))
+    fd = FreqDist(tags+desc)
 
     # Discovering word collocations
     bcf = BigramCollocationFinder.from_words(desc)
-    print("salle séjour: %s" % bcf.ngram_fd[("salle", "séjour")])
     # Top 4 bigrams
     best = bcf.nbest(BigramAssocMeasures.likelihood_ratio, 4)
-    print("Top 4 bigrams: "+str(best))
 
-    # print(fd.N )
-    # print(len(dict(fd)) )
-    # print(len(dict(bcf.ngram_fd)))
+    print("Number of unique words")
+    print(fd.B())
+    print("Number of unique bigrams")
+    print(bcf.ngram_fd.B())
 
     # Don't forget to Pickle cleaned data once done
+    result = dict(fd)
+    result.update(dict(bcf.ngram_fd))
+
+    print("Sum:")
+    print(len(result))
+
     f = open("data/freqs_descr.pkl",'wb')
-    pickle.dump((fd,bcf),f)
+    pickle.dump(result,f)
     f.close()
 
 
-def convert_CSV(input_file, word_threshold=1, bigram_threshold=1):
+def convert_CSV(input_file, threshold=1):
     f = open(input_file, 'rb')
-    fd, bcf = pickle.load(f)
+    fd = pickle.load(f)
 
-    with open("data/words_freqs.csv", 'w') as f:
+    with open("data/all_freqs.csv", 'w') as f:
         csv_writer = csv.writer(f)
         csv_writer.writerow(["word", "freq"])
-        for key in fd.keys():
-            if fd[key] > word_threshold:
-                csv_writer.writerow([key, fd[key]])
+        for item in sorted(fd.items(), key=itemgetter(1), reverse=True):
+            key = item[0]
+            if fd[key] > threshold:
+                w = key
+                if len(key) == 2:
+                    w = key[0]+" "+key[1]
+                csv_writer.writerow([w, fd[key]])
 
-    with open("data/bigrams_freqs.csv", 'w') as f:
-        csv_writer = csv.writer(f)
-        csv_writer.writerow(["word", "freq"])
-        bfd = dict(bcf.ngram_fd)
-        for key in bfd.keys():
-            if bfd[key] > bigram_threshold:
-                csv_writer.writerow([key[0]+" "+key[1], bfd[key]])
 
 
 def extract_words_prices(file_name, price_threshold=1):
@@ -138,11 +143,64 @@ def extract_words_prices(file_name, price_threshold=1):
                 csv_writer.writerow([word, words_prices[word]])
 
 
+def transform_ads(file_name, descriptive_words):
+    # Tokenize
+    tokenizer = RegexpTokenizer(r'\w+')
+
+    embeddings = []
+
+    # Read ads Data
+    with open(file_name, 'rt') as f:
+        ads = json.loads(f.read())
+
+        for ad in ads:
+            # Discripton iExtraction
+            desc = ads[ad]['description']
+
+            # Tags Extraction
+            tags= [tag.lower() for tag in ads[ad]['tags'] if not has_numbers(tag)]
+
+            # Description Filtering
+            desc_filtered = [
+                            word.lower() for word in tokenizer.tokenize(desc) if
+                                (
+                                word.lower() not in stopwords.words('french')
+                                and len(word) > 2
+                                and not has_numbers(word)
+                                )
+                            ]
+
+            # Extracting Bigrams
+            bcf = BigramCollocationFinder.from_words(desc_filtered)
+
+            all_words = desc_filtered+tags
+            all_words +=[ w1+' '+w2  for w1,w2 in bcf.ngram_fd.keys()]
+
+            in_ad = lambda word : 1 if word in all_words else -1
+
+            embeddings.append([ in_ad(word) for word in descriptive_words ])
+
+    print(len(embeddings))
+    print(len(embeddings[0]))
+    print(embeddings[0])
+
+    f = open("data/embeddings.pkl",'wb')
+    pickle.dump(embeddings,f)
+    f.close()
+
+
 if __name__ == "__main__":
 
     file_name = "../crawlers/data_full/03_seloger_ads_compressed.json"
 
     # read_data(file_name)
     # extract_freq()
-    # convert_CSV("data/freqs_descr.pkl", 10, 10)
-    extract_words_prices(file_name)
+    # convert_CSV("data/freqs_descr.pkl", 100)
+    # extract_words_prices(file_name)
+
+    descriptive_words = sorted(
+                        [ element[0] for element in csv.reader(
+                            open('data/all_freqs.csv','rt'), delimiter=',') 
+                        ])
+    
+    transform_ads(file_name, descriptive_words)
