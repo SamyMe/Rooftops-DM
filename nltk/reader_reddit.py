@@ -10,6 +10,7 @@ from nltk import FreqDist
 from nltk.collocations import BigramCollocationFinder
 from nltk.metrics import BigramAssocMeasures
 from operator import itemgetter
+from utils_json import *
 
 def has_numbers(inputString):
     return any(char.isdigit() for char in inputString)
@@ -147,8 +148,8 @@ def transform_ads(file_name, descriptive_words):
     # Tokenize
     tokenizer = RegexpTokenizer(r'\w+')
 
-    embeddings = []
-
+    embeddings = {}
+        
     # Read ads Data
     with open(file_name, 'rt') as f:
         ads = json.loads(f.read())
@@ -178,16 +179,13 @@ def transform_ads(file_name, descriptive_words):
 
             in_ad = lambda word : 1 if word in all_words else -1
 
-            embeddings.append([ in_ad(word) for word in descriptive_words ])
+            embeddings[ad] = [ in_ad(word) for word in descriptive_words ]
 
     print(len(embeddings))
-    print(len(embeddings[0]))
-    print(embeddings[0])
 
-    f = open("data/embeddings.pkl",'wb')
-    pickle.dump(embeddings,f)
-    f.close()
-
+    with open("data/embeddings.json", "wt") as f:
+        f.write(json.dumps(embeddings, separators=(',', ':')))
+    
 
 if __name__ == "__main__":
 
