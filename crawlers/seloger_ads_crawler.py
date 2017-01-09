@@ -4,7 +4,7 @@ import json
 import os
 import random as rnd
 import sys
-import utils_json as ua
+import utils_json as uj
 import utils_socks5 as us
 rnd.seed(4)
 
@@ -44,9 +44,9 @@ prst_path = main_path[:-5] + "_prst.json"
 left_path = main_path[:-5] + "_left.json"
 
 # init the dict and keys
-main_dict = ua.load_json(main_path)
+main_dict = uj.load_json(main_path)
 main_keys = get_keys_copy(main_dict)
-prst_dict = ua.load_json(prst_path) if os.path.isfile(prst_path) else {}
+prst_dict = uj.load_json(prst_path) if os.path.isfile(prst_path) else {}
 left_dict = {mk: mv for mk, mv in main_dict.items() if mk not in prst_dict}
 
 # make sure that files that are supposed to be present truly are
@@ -54,8 +54,8 @@ for ad_ref in prst_dict:
     assert os.path.isfile(DATA_DIR + ad_ref + ".htm")
 
 # make sure the files are consitent with the dicts
-ua.dump_json(prst_path, prst_dict)  # if prst_dict == 0 it needs to be created
-ua.dump_json(left_path, left_dict)  # left_path should be consitent with main_path and prst_path
+uj.dump_json(prst_path, prst_dict)  # if prst_dict == 0 it needs to be created
+uj.dump_json(left_path, left_dict)  # left_path should be consitent with main_path and prst_path
 assert len(prst_dict) + len(left_dict) == len(main_dict)
 
 
@@ -80,20 +80,20 @@ while len(main_dict) > 0:
         prst_dict[ad_ref] = ad_val  # add the newly loaded ad to the prst_dict
         print(cur_pos(prst_dict, left_dict), "| Loaded")
 
-        if count % 20 == 0:
+        if count % 50 == 0:
             us.restart_tor()
 
         count += 1
         if count % 10 == 0 or len(main_dict) == 0:
             print("----save----")
-            ua.dump_json(prst_path, prst_dict)
-            ua.dump_json(left_path, left_dict)
-            assert (dict(ua.load_json(prst_path), **ua.load_json(left_path))
-                    == ua.load_json(main_path))
+            uj.dump_json(prst_path, prst_dict)
+            uj.dump_json(left_path, left_dict)
+            assert (dict(uj.load_json(prst_path), **uj.load_json(left_path))
+                    == uj.load_json(main_path))
 
     if len(main_dict) == 0:  # if the left dict has been scanned entirely
         print("====loop====")
-        main_dict = ua.load_json(left_path)  # restart with what's left
+        main_dict = uj.load_json(left_path)  # restart with what's left
         main_keys = get_keys_copy(main_dict)
 
 
