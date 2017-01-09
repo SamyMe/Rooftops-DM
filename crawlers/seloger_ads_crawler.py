@@ -69,7 +69,10 @@ while len(main_dict) > 0:
 
     if ad_ref not in prst_dict:
         page = us.requests_get(ad_url, "get page")
-        assert page is not None
+        if page is None:
+            print(ad_url)
+            print(cur_pos(prst_dict, left_dict), "| Skipped")
+            
         with open(DATA_DIR + str(ad_ref) + ".htm", "wt") as f:
             f.write(page)
         del left_dict[ad_ref]  # and that is done!
