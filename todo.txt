@@ -2,13 +2,34 @@
 SHORT TERM:
 
     L
-        Addition of the ad_crawler next to the current listing_crawler
-        Small t-sne demo on the iris dataset
+        TSNE-VIZ
+            http://bl.ocks.org/mbostock/d1f7b58631e71fbf9c568345ee04a60e
+            http://bl.ocks.org/mbostock/4e3925cdc804db257a86fdef3a032a45
+            colorization of points
+            legend
+            color selection?
+            onclick javascript redirection
     S
-        Plot a histogram of "words prices"
+        WORDS-VIZ
+            http://publichealthintelligence.org/content/visualizing-words-used-national-conventions-2012
+            3 caracteristics of each word
+                surface = freq
+                x position = (price/area/price_per_area)
+                color = (price/area/price_per_area)
+            legend
 
-    LS
-        Demo html, organisation
+========
+
+tsne on word vectors
+    clusterization of ads
+    colors with price/area/price_per_area
+    /arrondissement
+Demo html, organisation
+haussmannien?
+janvier juillet
+
+embeddings = {}
+embeddings[id] =
 
 ========
 
@@ -37,6 +58,10 @@ DATA MINING
     Figure out what are the most important features that determine the price/location/etc.
     clustering, kmeans, hierachical methods
     outlier detections
+    Dendrograms
+        http://bl.ocks.org/mbostock/4739610f6d96aaad2fb1e78a72b385ab
+        http://bl.ocks.org/mbostock/e9ba78a2c1070980d1b530800ce7fa2b
+        http://bl.ocks.org/mbostock/ff91c1558bc570b08539547ccc90050b
 
 ========
 
