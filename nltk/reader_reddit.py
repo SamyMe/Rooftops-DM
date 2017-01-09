@@ -22,7 +22,7 @@ def read_data(file_name):
 
         for ad in ads:
 
-            desc = ads[ad]['text']
+            desc = ads[ad]['description']
 
             # Before Filtering
             desc_filtered = [
@@ -102,7 +102,7 @@ def extract_words_prices(file_name, price_threshold=1):
 
         for ad in ads:
 
-            desc = ads[ad]['text']
+            desc = ads[ad]['description']
 
             # Before Filtering
             desc_filtered = [
@@ -140,9 +140,9 @@ def extract_words_prices(file_name, price_threshold=1):
 
 if __name__ == "__main__":
 
-    file_name = "../crawlers/data/tmp_seloger_desc.json"
+    file_name = "../crawlers/data_full/03_seloger_ads_compressed.json"
 
     # read_data(file_name)
     # extract_freq()
-    # convert_CSV("data/freqs_descr.pkl", 1, 1)
+    # convert_CSV("data/freqs_descr.pkl", 10, 10)
     extract_words_prices(file_name)
