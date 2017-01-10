@@ -51,6 +51,7 @@ function updateTopics(topics) {
     // set it to : (word_price - min_price) / (max_price - min_price)
     d.k = fraction(d.parties[0].count, d.parties[1].count);
     if (isNaN(d.k)) d.k = .5;
+    // if x unset, set it to random (?)
     if (isNaN(d.x)) d.x = (1 - d.k) * width + Math.random();
     d.bias = .5 - Math.max(.1, Math.min(.9, d.k));
   });
@@ -71,49 +72,12 @@ function updateNodes() {
       .attr("xlink:href", function(d) { return "#" + encodeURIComponent(d.name); })
       .call(force.drag);
 
-  var democratEnter = nodeEnter.append("g")
-      .attr("class", "g-democrat");
-
-  democratEnter.append("clipPath")
-      .attr("id", function(d) { return "g-clip-democrat-" + d.id; })
-    .append("rect");
-
-  democratEnter.append("circle");
-
   var republicanEnter = nodeEnter.append("g")
       .attr("class", "g-republican");
 
-  republicanEnter.append("clipPath")
-      .attr("id", function(d) { return "g-clip-republican-" + d.id; })
-    .append("rect");
+  republicanEnter.append("circle")
+  	.attr("r", function(d) { return r(d.count); });
 
-  republicanEnter.append("circle");
-
-  nodeEnter.append("line")
-      .attr("class", "g-split");
-
-  node.selectAll("rect")
-      .attr("y", function(d) { return -d.r - clipPadding; })
-      .attr("height", function(d) { return 2 * d.r + 2 * clipPadding; });
-
-  node.select(".g-democrat rect")
-      .style("display", function(d) { return d.k > 0 ? null : "none" })
-      .attr("x", function(d) { return -d.r - clipPadding; })
-      .attr("width", function(d) { return 2 * d.r * d.k + clipPadding; });
-
-  node.select(".g-republican rect")
-      .style("display", function(d) { return d.k < 1 ? null : "none" })
-      .attr("x", function(d) { return -d.r + 2 * d.r * d.k; })
-      .attr("width", function(d) { return 2 * d.r; });
-
-  node.select(".g-democrat circle")
-      .attr("clip-path", function(d) { return d.k < 1 ? "url(#g-clip-democrat-" + d.id + ")" : null; });
-
-  node.select(".g-republican circle")
-      .attr("clip-path", function(d) { return d.k > 0 ? "url(#g-clip-republican-" + d.id + ")" : null; });
-
-  node.selectAll("circle")
-      .attr("r", function(d) { return r(d.count); });
 }
 
 // Update the displayed node labels.
