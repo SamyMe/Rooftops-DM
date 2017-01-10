@@ -47,6 +47,8 @@ function updateTopics(topics) {
   topics.forEach(function(d) {
     d.r = r(d.count);
     d.cr = Math.max(minRadius, d.r);
+    // d.k specifies the position [0 - 1] 0.5 being the midle
+    // set it to : (word_price - min_price) / (max_price - min_price)
     d.k = fraction(d.parties[0].count, d.parties[1].count);
     if (isNaN(d.k)) d.k = .5;
     if (isNaN(d.x)) d.x = (1 - d.k) * width + Math.random();
