@@ -110,12 +110,6 @@ function updateNodes() {
   node.select(".g-republican circle")
       .attr("clip-path", function(d) { return d.k > 0 ? "url(#g-clip-republican-" + d.id + ")" : null; });
 
-  node.select(".g-split")
-      .attr("x1", function(d) { return -d.r + 2 * d.r * d.k; })
-      .attr("y1", function(d) { return -Math.sqrt(d.r * d.r - Math.pow(-d.r + 2 * d.r * d.k, 2)); })
-      .attr("x2", function(d) { return -d.r + 2 * d.r * d.k; })
-      .attr("y2", function(d) { return Math.sqrt(d.r * d.r - Math.pow(-d.r + 2 * d.r * d.k, 2)); });
-
   node.selectAll("circle")
       .attr("r", function(d) { return r(d.count); });
 }
