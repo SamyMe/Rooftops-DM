@@ -10,7 +10,9 @@ from nltk import FreqDist
 from nltk.collocations import BigramCollocationFinder
 from nltk.metrics import BigramAssocMeasures
 from operator import itemgetter
+import random
 from utils_json import *
+i = 0
 
 def has_numbers(inputString):
     return any(char.isdigit() for char in inputString)
@@ -78,7 +80,6 @@ def extract_freq():
     pickle.dump(result,f)
     f.close()
 
-
 def convert_CSV(input_file, threshold=1):
     f = open(input_file, 'rb')
     fd = pickle.load(f)
@@ -94,55 +95,96 @@ def convert_CSV(input_file, threshold=1):
                     w = key[0]+" "+key[1]
                 csv_writer.writerow([w, fd[key]])
 
+def extract_words_prices(file_name, price_threshold=1,regenerate=False) :
 
+    if regenerate:
+        # Tokenize
+        tokenizer = RegexpTokenizer(r'\w+')
 
-def extract_words_prices(file_name, price_threshold=1):
-    # Tokenize
-    tokenizer = RegexpTokenizer(r'\w+')
+        # Read ads Data
+        with open(file_name, 'rt') as f:
+            ads = json.loads(f.read())
 
-    # Read ads Data
-    with open(file_name, 'rt') as f:
-        ads = json.loads(f.read())
+            words_prices = {}
 
-        words_prices = {}
+            for ad in ads:
 
-        for ad in ads:
+                desc = ads[ad]['description']
 
-            desc = ads[ad]['description']
+                tags= [tag.lower() for tag in ads[ad]['tags'] if not has_numbers(tag)]
 
-            # Before Filtering
-            desc_filtered = [
-                            word.lower() for word in tokenizer.tokenize(desc) if
-                                (
-                                word.lower() not in stopwords.words('french')
-                and len(word) > 1
-                and not word.isdigit()
-                                )
-                            ]
+                # Description Filtering
+                desc_filtered = [
+                                word.lower() for word in tokenizer.tokenize(desc) if
+                                    (
+                                    word.lower() not in stopwords.words('french')
+                                    and len(word) > 2
+                                    and not has_numbers(word)
+                                    )
+                                ]
 
-            # After Filtering
-            for w in desc_filtered:
-                if w in words_prices:
-                    words_prices[w][0] += 1
-                    words_prices[w][1] += ads[ad]['price']
+                # Extracting Bigrams
+                bcf = BigramCollocationFinder.from_words(desc_filtered)
 
-                else:
-                    words_prices[w] = [1, ads[ad]['price']]
+                all_words = desc_filtered+tags
+                all_words +=[ w1+' '+w2  for w1,w2 in bcf.ngram_fd.keys()]
 
-        # Making the mean
-        for w in words_prices:
-            words_prices[w] = words_prices[w][1] / words_prices[w][0] 
+                # After Filtering
+                for w in desc_filtered:
+                    price_p_surf = float(ads[ad]['surface'].replace(',','.')) if ads[ad]['surface']!='' else 1
+                    price_p_surf = ads[ad]['price'] / price_p_surf
 
-    print(words_prices)
+                    if w in words_prices:
+                        words_prices[w][0] += 1
+                        words_prices[w][1] += ads[ad]['price']
+                        words_prices[w][2] += price_p_surf
+                        words_prices[w][3] += ads[ad]['price'] / price_p_surf
 
-    # Write to CSV
-    with open("data/words_prices.csv", 'w') as f:
-        csv_writer = csv.writer(f)
-        csv_writer.writerow(["word", "price"])
-        for word in words_prices:
-            if words_prices[word] > price_threshold:
-                csv_writer.writerow([word, words_prices[word]])
+                    else:
+                        words_prices[w] = [ 1 , 
+                                            ads[ad]['price'], 
+                                            price_p_surf,
+                                            ads[ad]['price'] / price_p_surf]
 
+            # Calculating the mean
+            for w in words_prices:
+                for i in range(1, 4):
+                    words_prices[w][i] = words_prices[w][i] / words_prices[w][0] 
+
+        f = open('data/words_prices.pkl', 'wb')
+        pickle.dump(words_prices, f)
+        f.close()
+
+    else:
+        f = open('data/words_prices.pkl', 'rb')
+        words_prices = pickle.load(f)
+        f.close()
+
+    i = 0
+    # print(words_prices)
+    def to_dict(w_p):
+        global i
+        i+=1
+        result_dict = {
+            "name": w_p[0]
+            ,"price": w_p[1][1]
+            ,"surface": w_p[1][2]
+            ,"price_p_surf": w_p[1][3]
+            ,"id": i
+            ,"count": w_p[1][0]
+            ,"k":w_p[1][1]
+            ,"bias":0.4
+            ,"index":i
+            }
+        
+
+        return result_dict
+
+    words_100 = {"topics": [ to_dict(elem) for elem in sorted(words_prices.items(), reverse=True, key=lambda x: x[1][1])[:200:1]]}
+
+    # Write to JSON
+    with open("../d3/words-viz/prices_100_words.json", "wt") as f:
+        f.write(json.dumps(words_100))
 
 def transform_ads(file_name, descriptive_words):
     # Tokenize
@@ -194,11 +236,11 @@ if __name__ == "__main__":
     # read_data(file_name)
     # extract_freq()
     # convert_CSV("data/freqs_descr.pkl", 100)
-    # extract_words_prices(file_name)
+    extract_words_prices(file_name)
 
     descriptive_words = sorted(
                         [ element[0] for element in csv.reader(
                             open('data/all_freqs.csv','rt'), delimiter=',') 
                         ])
     
-    transform_ads(file_name, descriptive_words)
+    # transform_ads(file_name, descriptive_words)
