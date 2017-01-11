@@ -6,6 +6,9 @@ def load_json(path):
     with open(path, "rt") as f:
         return json.loads(f.read())
 
-def dump_json(path, dict):
+def dump_json(path, d, compact=False):
     with open(path, "wt") as f:
-        f.write(json.dumps(dict, indent=4))
+        if not compact:
+            f.write(json.dumps(d, indent=4))
+        else:
+            f.write(json.dumps(d, separators=(',', ':')))
