@@ -186,10 +186,10 @@ def extract_words_prices(file_name, price_threshold=1,regenerate=False) :
 
         return result_dict
 
-    words_100 = {"topics": [ to_dict(elem) for elem in sorted(words_prices.items(), reverse=True, key=lambda x: x[1][0])[:200:1]]}
+    words_100 = {"topics": [ to_dict(elem) for elem in sorted(words_prices.items(), reverse=True, key=lambda x: x[1][1])[:50:2]]}
 
     # Write to JSON
-    with open("../d3/words-viz/prices_100_words.json", "wt") as f:
+    with open("../d3/bubbles-viz/prices_100_words.json", "wt") as f:
         f.write(json.dumps(words_100))
 
 
@@ -244,7 +244,7 @@ if __name__ == "__main__":
     # read_data(file_name)
     # extract_freq()
     # convert_CSV("data/freqs_descr.pkl", 100)
-    # extract_words_prices(file_name)
+    extract_words_prices(file_name)
 
     descriptive_words = sorted(
                         [ element[0] for element in csv.reader(

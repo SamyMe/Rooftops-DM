@@ -119,7 +119,7 @@ function updateLabels() {
       .attr("class", "g-value");
 
   label
-      .style("font-size", function(d) { return Math.max(8, d.r / 2) + "px"; })
+      .style("font-size", "14px" )
       .style("width", function(d) { return d.r * 2.5 + "px"; });
 
   // Create a temporary span to compute the true text width.
