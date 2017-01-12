@@ -1,0 +1,28 @@
+Rooftops
+
+A visual analysis of appartment renting in Paris.
+
+TLDR:
+	- crawl thousands of appartment renting ads in Paris
+	- extract their descriptions as raw text
+	- encode them with a bag-of-words model
+	- use an effective dimensionality reduction technique (t-Sne)
+	- add a little bit of colors (depending on the price)
+	- and you get this:
+
+[viz_tsne_100]
+
+t-Sne (t-Distributed Stochastic Neighbor Embedding) is particularly well suited for the visualization of high-dimensional datasets. And it also comes in a lot of different flavors depending on the hyperparameters. Here is another example of t-Sne (on the same dataset but with a different learning rate).:
+
+[viz_tsne_1000]
+
+A few observations:
+	- Can you see the color gradient? This shows how different the vocabulary used in the ads descriptions can be different depending on the value of the appartement.
+	- Can you see the small clusters? This shows how renting agencies tend to use the same template of ad description over and over again.
+	- Can you see that there are more clusters in the red areas than in the blue areas? This shows that expensive appartments tend to be managed by renting agencies more than cheap(ish) appartments.
+
+But the purpose of this visualization is not just for data scientists interested in the subject, it is also for anyone looking for an appartment. This can be used as a recommandation tool that empowers the user a little bit more than if he or she has to follow the "recommanded" links. Want to find an ad just like the one you like? Simply click on the nearby ads and you found it before you know it!
+
+[viz_bubbles description]
+
+[viz_bubbles]
