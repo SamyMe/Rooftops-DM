@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>Words Prices</title>
+
+    <script src="https://d3js.org/d3.v2.min.js"></script>
+    <script src="viz_bubbles.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="viz_bubbles.css">
+    <style>
+        body {
+            margin: 0;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        div.tooltip {
+            color: #222;
+            background-color: #ddd;
+            padding: .5em;
+            text-shadow: #f5f5f5 0 1px 0;
+            border-radius: 2px;
+            opacity: 0.9;
+            position: absolute;
+        }
+    </style>
+
+</head>
+
+<body id="interactiveABC" class="interactiveABC">
+
+    <div class="hidden tooltip">
+    </div>
+    <div id="interactiveFreeFormMain" class="row" aline="center">
+        <div id="g-chart" class="col-md-12">
+            <div class="g-labels"></div>
+            <svg class="g-nodes"></svg>
+        </div>
+    </div>
+
+</body>
+
+</html>

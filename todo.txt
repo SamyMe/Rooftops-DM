@@ -2,13 +2,15 @@
 SHORT TERM:
 
     L
+    http://blockbuilder.org/Bennettson/92f934472ad68192d403d274b91173ae
         TSNE-VIZ
-            http://bl.ocks.org/mbostock/d1f7b58631e71fbf9c568345ee04a60e
-            http://bl.ocks.org/mbostock/4e3925cdc804db257a86fdef3a032a45
-            colorization of points
-            legend
-            color selection?
-            onclick javascript redirection
+            add nom_agence and arrondissement
+            launch another tsne but with a different learning_rate
+            try this:
+                http://scikit-learn.org/stable/auto_examples/manifold/plot_compare_methods.html
+            clean python
+            website
+            report
     S
         WORDS-VIZ
             http://publichealthintelligence.org/content/visualizing-words-used-national-conventions-2012
@@ -66,6 +68,14 @@ DATA MINING
 ========
 
 Mess:
+
+scatter plot in d3:
+    http://bl.ocks.org/weiglemc/6185069
+    http://bl.ocks.org/mbostock/d1f7b58631e71fbf9c568345ee04a60e
+    http://bl.ocks.org/mbostock/4e3925cdc804db257a86fdef3a032a45
+use queue:
+    http://learnjsdata.com/read_data.html
+
     Torification of the crawler [kinda done ? need to be checked]
     Full check of seloger_listing_crawler.py and Re-crawl (?)
 
