@@ -1,8 +1,10 @@
 # Rooftops
 
+
 ### Context
 
 The goal here is to build, visualize and analyse a dataset of apartment renting ads in Paris. The result of this study can be found [here](https://rooftopscorp.github.io/).
+
 
 ### How to use the files
 
@@ -42,19 +44,6 @@ python3 dump_final_datasets.py --data "./data/plots/"
 * Finally, you should obtain something like [this](https://rooftopscorp.github.io/). :D
 
 
-### Requirements
-
-* __For the crawl__:
-  * tor
-  * requests + socks5
-  * beautifulsoup
-
-
-* __For data analysis__:
-  * numpy
-  * matplotlib
-  * sklearn
-
 ### Structure of the repository
 
 * `javascript/` contains the visualization in d3.  
@@ -65,6 +54,7 @@ python3 dump_final_datasets.py --data "./data/plots/"
   * `python/main_data/` contains the results of the crawl (with `seloger_full_listing.json` first and `seloger_ads_compressed.json` second).  
   * `python/nltk_data/` contains the results of the natural language processing treatments to get the bag-of-words and therefore the "embeddings" of the ads in `embeddings.json.zip`.  
   * `python/nltk_data/` contains the results of dimensionality reduction with tsne and mds. The files that start with `data_` contain only the coordinates of the points (aka the ads). And the files that start with `final_data_` contain the coordinates of the points as well as additional information about the ads.
+
 
 ### Requirements
 
