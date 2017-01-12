@@ -29,6 +29,18 @@
     Analysing word distributions in descriptions :
     Extracting words and bigrams frequency  
     Now we can plot a histogram of "words prices" to see what we should avoid looking for if we want a cheap house ?
-    
+
+
+XX0107
+    Getting inspired by Visualizing words used at the National Conventions 2012
+    Plotting words in cercles with their frequency as a Radius and a color based on the mean price of the ads they appear in. 
+    conclusion: vocabulary used between very different ads was also pretty different
+
+XX0107
+    Figure out an encoding for the data:
+
+
+XX0107
+    Use an effective dimensionality reduction technique (t-Sne)
     
     
