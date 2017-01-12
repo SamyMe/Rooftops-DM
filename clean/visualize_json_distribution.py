@@ -9,16 +9,11 @@ import matplotlib.pyplot as plt
 
 # get json path
 parser = argparse.ArgumentParser()
-parser.add_argument('--path', help='Path to the .json')
+parser.add_argument('--json', help='Path to the .json')
 args = parser.parse_args()
-json_path = args.path
-
-# handle errors
-if json_path is None:
-    print("Please provide a path to a json listing with '--path'")
-    sys.exit(0)
-if not os.path.isfile(json_path):
-    print("The file '" + json_path + "' does not exist!")
+json_path = args.json
+if (args.json is None or not os.path.isfile(args.json) or args.json[-5:] != ".json"):
+    print("Please provide a valid path to a json listing with '--json'")
     sys.exit(0)
 
 # get the data from the json

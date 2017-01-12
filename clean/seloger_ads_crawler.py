@@ -11,7 +11,6 @@ rnd.seed(4)
 
 # argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("--data", help="Path to the data/ directory")
 parser.add_argument("--json", help="Path to the .json")
 args = parser.parse_args()
 if (args.json is None or not os.path.isfile(args.json) or args.json[-5:] != ".json"):
