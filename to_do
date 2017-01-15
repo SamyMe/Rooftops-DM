@@ -1,7 +1,13 @@
 To do:
+
     Figure out what are the most important features that determine the price/location/etc.
-    clustering, kmeans, hierachical methods
-    outlier detections
+
+    Clustering: kmeans, hierachical methods : 
+    	- Try to find the same conclusions as http://scikit-learn.org/stable/modules/clustering.html (inspiration for report writing)
+
+
+    Outlier detections
+
     Dendrograms
         http://bl.ocks.org/mbostock/4739610f6d96aaad2fb1e78a72b385ab
         http://bl.ocks.org/mbostock/e9ba78a2c1070980d1b530800ce7fa2b
