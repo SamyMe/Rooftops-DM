@@ -1,0 +1,8 @@
+To do:
+    Figure out what are the most important features that determine the price/location/etc.
+    clustering, kmeans, hierachical methods
+    outlier detections
+    Dendrograms
+        http://bl.ocks.org/mbostock/4739610f6d96aaad2fb1e78a72b385ab
+        http://bl.ocks.org/mbostock/e9ba78a2c1070980d1b530800ce7fa2b
+        http://bl.ocks.org/mbostock/ff91c1558bc570b08539547ccc90050b

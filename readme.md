@@ -5,7 +5,6 @@
 
 This is a comparative study of the result of Clusturing algorithms over a dataset of apartment renting ads in Paris.
 
-
 ### How to use the files
 
 This repo contains all the necessary files the redo the whole thing.
