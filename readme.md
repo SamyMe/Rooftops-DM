@@ -3,7 +3,7 @@
 
 ### Context
 
-The goal here is to build, visualize and analyse a dataset of apartment renting ads in Paris. The result of this study can be found [here](https://rooftopscorp.github.io/).
+This is a comparative study of the result of Clusturing algorithms over a dataset of apartment renting ads in Paris.
 
 
 ### How to use the files
